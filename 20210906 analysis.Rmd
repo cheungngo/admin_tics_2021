@@ -1,0 +1,134 @@
+---
+title: '20210906'
+author: "cheungngo"
+date: "6 September 2021"
+output: html_document
+---
+
+### Data preparation and function building
+
+```{r, message=FALSE, warning=FALSE}
+library(readr)
+tics_raww <- read_csv("~/tics_raww.csv")
+```
+
+```{r}
+# For reference
+
+names(tics_raww)
+```
+
+```{r}
+### indices of columns
+
+motor_col = c(42:43, 46:51, 56:61, 66:71, 76:81)
+vocal_col = c(44:45, 52, 62, 72, 82)
+misc_col = c(53:55, 63:65, 73:75, 83:85)
+```
+
+```{r}
+### Creating the "year" column
+
+tics_raww$ref_date_sim = sapply(tics_raww$`Referral date`, function (i) {
+  substr(i, start = 1, stop = 4)
+})
+tics_raww$ref_date_sim[1] = 2016 # turning the 9999 into 2016
+```
+
+```{r}
+### An example analysis (for motor)
+
+year = "2017"
+column = 46
+x = unlist(tics_raww[,column])
+
+ind = which(tics_raww$`Motor Total
+ (Pre)` > 0 & x < 8888 & tics_raww$ref_date_sim == year)
+
+out = c(round(mean(x[ind]),3), round(sd(x[ind]),3), median(x[ind]), 
+        paste(min(x[ind]), " - ", max(x[ind]), sep = ""),
+        IQR(x[ind]))
+out
+```
+
+```{r}
+### thus creating a function
+
+summ = function(column_number, type) {
+  
+  year = c("2016", "2017", "2018", "2019", "2020", "2021") # need to amend in the future
+  
+  x = unlist(tics_raww[,column_number])
+  pre_m = unlist(tics_raww[,51])
+  pre_v = unlist(tics_raww[,52])
+  
+  output = as.data.frame(matrix(nrow = length(year), ncol = 6))
+  
+  for (y in (1:length(year))) {
+    
+    if (type == "motor") {
+      
+      ind = which(pre_m > 0 & x < 8888 & tics_raww$ref_date_sim == year[y])
+    }
+    if (type == "vocal") {
+      ind = which(pre_v > 0 & x < 8888 & tics_raww$ref_date_sim == year[y])
+    }
+    if (type == "misc") {
+      ind = which(x < 8888 & tics_raww$ref_date_sim == year[y] & (pre_m>0 | pre_v>0))
+    }
+    
+    out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
+            median(x[ind]), 
+            paste(min(x[ind]), " - ", max(x[ind]), sep = ""),
+            IQR(x[ind]))
+    output[y,] = out
+    
+  }
+  
+  output = t(output)
+  colnames(output) = year
+  rownames(output) = c("n","mean", "sd", "median", "range", "IQR")
+  output = as.data.frame(output)
+  print(output)
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+# testing on the function
+
+summ(42, "motor")
+summ(85, "misc")
+```
+
+
+### Data analysis
+
+```{r, warning=FALSE, message=FALSE}
+### Motor
+
+for(i in motor_col) {
+  print(colnames(tics_raww)[i])
+  summ(i, "motor")
+  print("")
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+### Vocal
+
+for(i in vocal_col) {
+  print(colnames(tics_raww)[i])
+  summ(i, "vocal")
+  print("")
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+### Misc
+
+for(i in misc_col) {
+  print(colnames(tics_raww)[i])
+  summ(i, "misc")
+  print("")
+}
+```
