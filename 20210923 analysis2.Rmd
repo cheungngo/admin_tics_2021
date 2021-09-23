@@ -1,0 +1,199 @@
+---
+title: "20210923 analysis2"
+author: "cheungngo"
+date: "23 September 2021"
+output: html_document
+---
+
+### Data preparation and function building
+
+```{r, message=FALSE, warning=FALSE}
+library(readr)
+tics_raww <- read_csv("~/tics_raww.csv")
+```
+
+```{r}
+# For reference
+
+# names(tics_raww)
+```
+
+```{r}
+### indices of columns (after refering to the above names(tics_raww))
+
+motor_col = c(42:43, 46:51, 56:61, 66:71, 76:81)
+vocal_col = c(44:45, 52, 62, 72, 82)
+misc_col = c(53:55, 63:65, 73:75, 83:85)
+```
+
+```{r}
+### Trimming the unparsable chars
+
+tics_raw = tics_raww
+for (i in 1:length(colnames(tics_raww))) {
+  colnames(tics_raw)[i] = gsub("\n", "", colnames(tics_raww)[i])
+  colnames(tics_raw)[i] = gsub(" ", "_", colnames(tics_raw)[i])
+  colnames(tics_raw)[i] = gsub("[()]", "", colnames(tics_raw)[i])
+}
+```
+
+```{r}
+### Creating the "year" column
+
+tics_raw$ref_date_sim = sapply(tics_raw$Referral_date, function (i) {
+  substr(i, start = 1, stop = 4)
+})
+tics_raw$ref_date_sim[1] = 2016 # turning the 9999 into 2016
+```
+
+```{r}
+### Function of analysis
+
+summ = function(column_number, type) {
+  
+  year = c("2016", "2017", "2018", "2019", "2020", "2021") # need to amend in the future
+  
+  x = unlist(tics_raw[,column_number])
+  pre_m = unlist(tics_raw[,51]) # total pre- motor score
+  pre_v = unlist(tics_raw[,52]) # total pre- vocal score
+  
+  output = as.data.frame(matrix(nrow = length(year) + 1, ncol = 6))
+  
+  # generating the outcomes year by year
+  for (y in (1:length(year))) {
+    
+    # indices (of subjects) for each year
+    if (type == "motor") {
+      
+      ind = which(pre_m > 0 & x < 8888 & tics_raw$ref_date_sim == year[y])
+    }
+    if (type == "vocal") {
+      ind = which(pre_v > 0 & x < 8888 & tics_raw$ref_date_sim == year[y])
+    }
+    if (type == "misc") {
+      ind = which(x < 8888 & tics_raw$ref_date_sim == year[y] & (pre_m>0 | pre_v>0))
+    }
+    
+    # output
+    out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
+            median(x[ind]), 
+            paste(min(x[ind]), " - ", max(x[ind]), sep = ""),
+            IQR(x[ind]))
+    output[y,] = out
+    
+  }
+  
+  # Calculating the total
+  if (type == "motor") {
+      
+      ind = which(pre_m > 0 & x < 8888)
+    }
+    if (type == "vocal") {
+      ind = which(pre_v > 0 & x < 8888)
+    }
+    if (type == "misc") {
+      ind = which(x < 8888 & (pre_m>0 | pre_v>0))
+    }
+  
+  # output for total
+  out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
+          median(x[ind]), 
+          paste(min(x[ind]), " - ", max(x[ind]), sep = ""),
+          IQR(x[ind]))
+  output[length(year)+1,] = out
+  
+  output = t(output)
+  title = c(year, colnames(tics_raw)[column_number])
+  output = rbind(title, output)
+  output = as.data.frame(output)
+  rownames(output) = c("---", "n","mean", "sd", "median", "range", "IQR")
+  print(output)
+}
+```
+
+```{r}
+### Performing a serial of functions at a time
+
+serial_summ = function (data, columns, type) {
+  for (x in columns) {
+    assign(paste("Tab", colnames(data)[x], sep = "_"),
+           summ(x, type))
+  }
+  tab = eval(parse(text = paste("Tab", colnames(data)[columns[1]], sep = "_")))
+  for (x in columns[-1]) {
+    tab2 = eval(parse(text = paste("Tab", colnames(data)[x], sep = "_")))
+    tab = rbind(tab, tab2)
+  }
+  return(as.data.frame(tab))
+}
+```
+
+### Analysis of data
+
+```{r, warning = FALSE, message=FALSE}
+motor = serial_summ(tics_raw, motor_col, "motor")
+vocal = serial_summ(tics_raw, motor_col, "vocal")
+misc = serial_summ(tics_raw, motor_col, "misc")
+```
+
+```{r}
+write.csv(motor, "motor.csv")
+write.csv(vocal, "vocal.csv")
+write.csv(misc, "misc.csv")
+```
+
+### Performing pre-post t-tests
+
+```{r}
+prepost_t = function(pre, post, type) {
+  
+  x = unlist(tics_raw[,pre])
+  y = unlist(tics_raw[,post])
+  pre_m = unlist(tics_raw[,51])
+  pre_v = unlist(tics_raw[,52])
+  prescore = unlist(tics_raw[,pre])
+  postscore = unlist(tics_raw[,post])
+    
+  if (type == "motor") {
+      ind = which(pre_m > 0 & x < 8888 & y < 8888)
+    }
+    else if (type == "vocal") {
+      ind = which(pre_v > 0 & x < 8888 & y < 8888)
+    }
+    else if (type == "misc") {
+      ind = which(x < 8888 & (pre_m>0 | pre_v>0) & y < 8888)
+    }
+  
+  return(t.test(prescore[ind], postscore[ind], paired = T))
+  
+}
+```
+
+```{r}
+t_motor = prepost_t(51,61, "motor")
+t_vocal = prepost_t(52,62, "vocal")
+t_impair = prepost_t(53,63, "misc")
+t_YGTSS = prepost_t(54,64, "misc")
+t_PUTS = prepost_t(55,65, "misc")
+```
+
+```{r}
+t_motor_out = c(t_motor$estimate, t_motor$statistic, t_motor$p.value)
+t_vocal_out = c(t_vocal$estimate, t_vocal$statistic, t_vocal$p.value)
+t_impair_out = c(t_impair$estimate, t_impair$statistic, t_impair$p.value)
+t_YGTSS_out = c(t_YGTSS$estimate, t_YGTSS$statistic, t_YGTSS$p.value)
+t_PUTS_out = c(t_PUTS$estimate, t_PUTS$statistic, t_PUTS$p.value)
+```
+
+```{r}
+t_out = rbind(t_motor_out, t_vocal_out, t_impair_out, t_YGTSS_out, t_PUTS_out)
+t_out = as.data.frame(t_out)
+colnames(t_out) = c("MD", "t", "p")
+rownames(t_out) = c("Motor", "Vocal", "Impairment", "YGTSS", "PUTS")
+t_out
+```
+
+```{r}
+write.csv(t_out, "ttest.csv")
+```
+
