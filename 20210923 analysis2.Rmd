@@ -132,8 +132,8 @@ serial_summ = function (data, columns, type) {
 
 ```{r, warning = FALSE, message=FALSE}
 motor = serial_summ(tics_raw, motor_col, "motor")
-vocal = serial_summ(tics_raw, motor_col, "vocal")
-misc = serial_summ(tics_raw, motor_col, "misc")
+vocal = serial_summ(tics_raw, vocal_col, "vocal")
+misc = serial_summ(tics_raw, misc_col, "misc")
 ```
 
 ```{r}
