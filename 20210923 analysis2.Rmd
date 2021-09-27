@@ -77,7 +77,7 @@ summ = function(column_number, type) {
     # output
     out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
             median(x[ind]), 
-            paste(min(x[ind]), " - ", max(x[ind]), sep = ""),
+            paste("(",min(x[ind]), "-", max(x[ind]), ")", sep = ""),
             IQR(x[ind]))
     output[y,] = out
     
@@ -98,7 +98,7 @@ summ = function(column_number, type) {
   # output for total
   out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
           median(x[ind]), 
-          paste(min(x[ind]), " - ", max(x[ind]), sep = ""),
+          paste("(",min(x[ind]), "-", max(x[ind]), ")", sep = ""),
           IQR(x[ind]))
   output[length(year)+1,] = out
   

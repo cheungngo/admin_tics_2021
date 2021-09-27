@@ -227,7 +227,7 @@ summ = function(column_number, type) {
     # output
     out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
             median(x[ind]), 
-            paste(min(x[ind]), &quot; - &quot;, max(x[ind]), sep = &quot;&quot;),
+            paste(&quot;(&quot;,min(x[ind]), &quot;-&quot;, max(x[ind]), &quot;)&quot;, sep = &quot;&quot;),
             IQR(x[ind]))
     output[y,] = out
     
@@ -248,7 +248,7 @@ summ = function(column_number, type) {
   # output for total
   out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
           median(x[ind]), 
-          paste(min(x[ind]), &quot; - &quot;, max(x[ind]), sep = &quot;&quot;),
+          paste(&quot;(&quot;,min(x[ind]), &quot;-&quot;, max(x[ind]), &quot;)&quot;, sep = &quot;&quot;),
           IQR(x[ind]))
   output[length(year)+1,] = out
   
@@ -283,7 +283,7 @@ serial_summ = function (data, columns, type) {
 ## mean       6 6.167     7  7.625    6.9   6.5                6.893
 ## sd      &lt;NA&gt; 1.722  &lt;NA&gt;  1.408  2.514 2.121                1.912
 ## median     6     6     7    7.5      7   6.5                    7
-## range  6 - 6 4 - 9 7 - 7 6 - 10 4 - 12 5 - 8               4 - 12
+## range  (6-6) (4-9) (7-7) (6-10) (4-12) (5-8)               (4-12)
 ## IQR        0   1.5     0    1.5      3   1.5                 2.25
 ##           V1    V2    V3     V4     V5    V6                   V7
 ## ---     2016  2017  2018   2019   2020  2021 Worse_motor_tics_Age
@@ -291,7 +291,7 @@ serial_summ = function (data, columns, type) {
 ## mean       8   7.5     7 10.125    9.4   6.5                8.857
 ## sd      &lt;NA&gt; 1.517  &lt;NA&gt;  3.091  3.921 2.121                3.124
 ## median     8   7.5     7     10      8   6.5                    8
-## range  8 - 8 5 - 9 7 - 7 6 - 15 7 - 20 5 - 8               5 - 20
+## range  (8-8) (5-9) (7-7) (6-15) (7-20) (5-8)               (5-20)
 ## IQR        0  1.75     0    4.5   1.75   1.5                 2.25
 ##           V1    V2    V3    V4    V5    V6          V7
 ## ---     2016  2017  2018  2019  2020  2021 Motor_1_Pre
@@ -299,7 +299,7 @@ serial_summ = function (data, columns, type) {
 ## mean     1.5 2.368 2.214   1.4     3     2       2.186
 ## sd     0.707 1.116 0.802 0.894     0  &lt;NA&gt;       0.982
 ## median   1.5     2     2     2     3     2           2
-## range  1 - 2 1 - 5 1 - 4 0 - 2 3 - 3 2 - 2       0 - 5
+## range  (1-2) (1-5) (1-4) (0-2) (3-3) (2-2)       (0-5)
 ## IQR      0.5     0  0.75     1     0     0           0
 ##           V1    V2    V3    V4    V5    V6          V7
 ## ---     2016  2017  2018  2019  2020  2021 Motor_2_Pre
@@ -307,7 +307,7 @@ serial_summ = function (data, columns, type) {
 ## mean     3.5 3.789 3.857   3.6   3.5     2       3.721
 ## sd     2.121 1.357 1.027 1.673 0.707  &lt;NA&gt;        1.26
 ## median   3.5     4     4     4   3.5     2           4
-## range  2 - 5 1 - 5 2 - 5 1 - 5 3 - 4 2 - 2       1 - 5
+## range  (2-5) (1-5) (2-5) (1-5) (3-4) (2-2)       (1-5)
 ## IQR      1.5   2.5   1.5     2   0.5     0           2
 ##           V1    V2    V3    V4    V5    V6          V7
 ## ---     2016  2017  2018  2019  2020  2021 Motor_3_Pre
@@ -315,7 +315,7 @@ serial_summ = function (data, columns, type) {
 ## mean       1 3.105 2.429   2.8   2.5     1       2.674
 ## sd         0  1.37 1.158 1.643 0.707  &lt;NA&gt;        1.34
 ## median     1     3     2     2   2.5     1           2
-## range  1 - 1 1 - 5 1 - 5 1 - 5 2 - 3 1 - 1       1 - 5
+## range  (1-1) (1-5) (1-5) (1-5) (2-3) (1-1)       (1-5)
 ## IQR        0     2  0.75     2   0.5     0           2
 ##           V1    V2    V3    V4    V5    V6          V7
 ## ---     2016  2017  2018  2019  2020  2021 Motor_4_Pre
@@ -323,7 +323,7 @@ serial_summ = function (data, columns, type) {
 ## mean     1.5 2.579 2.571   1.8   2.5     1       2.395
 ## sd     0.707 1.216 0.852 0.447 0.707  &lt;NA&gt;       1.027
 ## median   1.5     3     2     2   2.5     1           2
-## range  1 - 2 0 - 5 2 - 5 1 - 2 2 - 3 1 - 1       0 - 5
+## range  (1-2) (0-5) (2-5) (1-2) (2-3) (1-1)       (0-5)
 ## IQR      0.5     1     1     0   0.5     0           1
 ##           V1    V2    V3    V4    V5    V6          V7
 ## ---     2016  2017  2018  2019  2020  2021 Motor_5_Pre
@@ -331,7 +331,7 @@ serial_summ = function (data, columns, type) {
 ## mean       2 1.789 2.071     2   1.5     2       1.907
 ## sd     1.414 1.619 1.141 1.225 0.707  &lt;NA&gt;       1.324
 ## median     2     1     2     2   1.5     2           2
-## range  1 - 3 0 - 5 0 - 4 1 - 4 1 - 2 2 - 2       0 - 5
+## range  (1-3) (0-5) (0-4) (1-4) (1-2) (2-2)       (0-5)
 ## IQR        1     1   1.5     1   0.5     0           1
 ##            V1     V2     V3     V4      V5    V6              V7
 ## ---      2016   2017   2018   2019    2020  2021 Motor_Total_Pre
@@ -339,7 +339,7 @@ serial_summ = function (data, columns, type) {
 ## mean      9.5 13.632 13.143   11.6      13     8          12.884
 ## sd       4.95   5.09  3.527  3.209   2.828  &lt;NA&gt;           4.277
 ## median    9.5     14   12.5     12      13     8              13
-## range  6 - 13 5 - 23 8 - 20 7 - 15 11 - 15 8 - 8          5 - 23
+## range  (6-13) (5-23) (8-20) (7-15) (11-15) (8-8)          (5-23)
 ## IQR       3.5    7.5   3.75      4       2     0               5
 ##           V1    V2    V3    V4    V5         V6           V7
 ## ---     2016  2017  2018  2019  2020       2021 Motor_1_Post
@@ -347,7 +347,7 @@ serial_summ = function (data, columns, type) {
 ## mean       2 1.938 2.231   1.8     2        NaN        2.027
 ## sd      &lt;NA&gt; 1.289 0.927 0.447     0       &lt;NA&gt;        1.013
 ## median     2     2     2     2     2       &lt;NA&gt;            2
-## range  2 - 2 0 - 5 0 - 4 1 - 2 2 - 2 Inf - -Inf        0 - 5
+## range  (2-2) (0-5) (0-4) (1-2) (2-2) (Inf--Inf)        (0-5)
 ## IQR        0     1     1     0     0       &lt;NA&gt;            0
 ##           V1    V2    V3    V4    V5         V6           V7
 ## ---     2016  2017  2018  2019  2020       2021 Motor_2_Post
@@ -355,7 +355,7 @@ serial_summ = function (data, columns, type) {
 ## mean       4  3.25 3.538   3.7   3.5        NaN        3.446
 ## sd      &lt;NA&gt;  1.88  1.45 1.095 0.707       &lt;NA&gt;        1.536
 ## median     4     4     4     4   3.5       &lt;NA&gt;            4
-## range  4 - 4 0 - 5 0 - 5 2 - 5 3 - 4 Inf - -Inf        0 - 5
+## range  (4-4) (0-5) (0-5) (2-5) (3-4) (Inf--Inf)        (0-5)
 ## IQR        0  3.25     2   0.5   0.5       &lt;NA&gt;            2
 ##           V1    V2    V3    V4    V5         V6           V7
 ## ---     2016  2017  2018  2019  2020       2021 Motor_3_Post
@@ -363,7 +363,7 @@ serial_summ = function (data, columns, type) {
 ## mean       1 2.188     2   1.4   3.5        NaN        2.054
 ## sd      &lt;NA&gt; 1.223 1.225 0.894 0.707       &lt;NA&gt;        1.201
 ## median     1     2     2     2   3.5       &lt;NA&gt;            2
-## range  1 - 1 0 - 4 0 - 4 0 - 2 3 - 4 Inf - -Inf        0 - 4
+## range  (1-1) (0-4) (0-4) (0-2) (3-4) (Inf--Inf)        (0-4)
 ## IQR        0     2     2     1   0.5       &lt;NA&gt;            2
 ##           V1    V2    V3      V4    V5         V6           V7
 ## ---     2016  2017  2018    2019  2020       2021 Motor_4_Post
@@ -371,7 +371,7 @@ serial_summ = function (data, columns, type) {
 ## mean       2     2     2     2.5   3.5        NaN        2.149
 ## sd      &lt;NA&gt; 1.317 1.225       1 0.707       &lt;NA&gt;        1.218
 ## median     2     2     2       2   3.5       &lt;NA&gt;            2
-## range  2 - 2 0 - 5 0 - 4 1.5 - 4 3 - 4 Inf - -Inf        0 - 5
+## range  (2-2) (0-5) (0-4) (1.5-4) (3-4) (Inf--Inf)        (0-5)
 ## IQR        0  1.25     2       1   0.5       &lt;NA&gt;          1.5
 ##           V1    V2    V3    V4    V5         V6           V7
 ## ---     2016  2017  2018  2019  2020       2021 Motor_5_Post
@@ -379,7 +379,7 @@ serial_summ = function (data, columns, type) {
 ## mean       3 1.562 1.385   0.7     2        NaN        1.446
 ## sd      &lt;NA&gt; 1.209 1.387 0.447     0       &lt;NA&gt;        1.201
 ## median     3   1.5     1     1     2       &lt;NA&gt;            1
-## range  3 - 3 0 - 4 0 - 4 0 - 1 2 - 2 Inf - -Inf        0 - 4
+## range  (3-3) (0-4) (0-4) (0-1) (2-2) (Inf--Inf)        (0-4)
 ## IQR        0     1     2   0.5     0       &lt;NA&gt;            1
 ##             V1     V2     V3     V4      V5         V6               V7
 ## ---       2016   2017   2018   2019    2020       2021 Moter_Total_Post
@@ -387,7 +387,7 @@ serial_summ = function (data, columns, type) {
 ## mean        12 10.938 11.154   10.1    14.5        NaN           11.122
 ## sd        &lt;NA&gt;  6.093  5.047  1.746   0.707       &lt;NA&gt;            5.013
 ## median      12     11     11     11    14.5       &lt;NA&gt;               11
-## range  12 - 12 0 - 23 0 - 19 8 - 12 14 - 15 Inf - -Inf           0 - 23
+## range  (12-12) (0-23) (0-19) (8-12) (14-15) (Inf--Inf)           (0-23)
 ## IQR          0      6      4    2.5     0.5       &lt;NA&gt;                5
 ##           V1    V2    V3         V4         V5         V6            V7
 ## ---     2016  2017  2018       2019       2020       2021 Motor_1_6_mth
@@ -395,7 +395,7 @@ serial_summ = function (data, columns, type) {
 ## mean       2 1.769     2        NaN        NaN        NaN         1.842
 ## sd         0 1.166     1       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;         1.015
 ## median     2     2     2       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             2
-## range  2 - 2 0 - 4 1 - 3 Inf - -Inf Inf - -Inf Inf - -Inf         0 - 4
+## range  (2-2) (0-4) (1-3) (Inf--Inf) (Inf--Inf) (Inf--Inf)         (0-4)
 ## IQR        0     1     1       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             1
 ##           V1    V2    V3         V4         V5         V6            V7
 ## ---     2016  2017  2018       2019       2020       2021 Motor_2_6_mth
@@ -403,7 +403,7 @@ serial_summ = function (data, columns, type) {
 ## mean       3 2.923 3.333        NaN        NaN        NaN             3
 ## sd     1.732 1.441 2.082       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;         1.491
 ## median     2     3     4       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             3
-## range  2 - 5 1 - 5 1 - 5 Inf - -Inf Inf - -Inf Inf - -Inf         1 - 5
+## range  (2-5) (1-5) (1-5) (Inf--Inf) (Inf--Inf) (Inf--Inf)         (1-5)
 ## IQR      1.5     2     2       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;           2.5
 ##           V1    V2    V3         V4         V5         V6            V7
 ## ---     2016  2017  2018       2019       2020       2021 Motor_3_6_mth
@@ -411,7 +411,7 @@ serial_summ = function (data, columns, type) {
 ## mean   1.667 1.846 1.333        NaN        NaN        NaN         1.737
 ## sd     0.577 1.214 1.155       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;         1.098
 ## median     2     2     2       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             2
-## range  1 - 2 0 - 4 0 - 2 Inf - -Inf Inf - -Inf Inf - -Inf         0 - 4
+## range  (1-2) (0-4) (0-2) (Inf--Inf) (Inf--Inf) (Inf--Inf)         (0-4)
 ## IQR      0.5     1     1       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             1
 ##           V1    V2    V3         V4         V5         V6            V7
 ## ---     2016  2017  2018       2019       2020       2021 Motor_4_6_mth
@@ -419,7 +419,7 @@ serial_summ = function (data, columns, type) {
 ## mean       2 1.923 1.667        NaN        NaN        NaN         1.895
 ## sd         0 1.115 1.528       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;         1.049
 ## median     2     2     2       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             2
-## range  2 - 2 0 - 4 0 - 3 Inf - -Inf Inf - -Inf Inf - -Inf         0 - 4
+## range  (2-2) (0-4) (0-3) (Inf--Inf) (Inf--Inf) (Inf--Inf)         (0-4)
 ## IQR        0     0   1.5       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             0
 ##           V1    V2    V3         V4         V5         V6            V7
 ## ---     2016  2017  2018       2019       2020       2021 Motor_5_6_mth
@@ -427,7 +427,7 @@ serial_summ = function (data, columns, type) {
 ## mean   1.667 1.231     1        NaN        NaN        NaN         1.263
 ## sd     0.577 1.363     1       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;         1.195
 ## median     2     1     1       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             1
-## range  1 - 2 0 - 4 0 - 2 Inf - -Inf Inf - -Inf Inf - -Inf         0 - 4
+## range  (1-2) (0-4) (0-2) (Inf--Inf) (Inf--Inf) (Inf--Inf)         (0-4)
 ## IQR      0.5     2     1       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             2
 ##            V1     V2     V3         V4         V5         V6                V7
 ## ---      2016   2017   2018       2019       2020       2021 Motor_Total_6_mth
@@ -435,7 +435,7 @@ serial_summ = function (data, columns, type) {
 ## mean   10.333  9.692  9.333        NaN        NaN        NaN             9.737
 ## sd      2.517  5.154  6.351       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             4.794
 ## median     10      9     13       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;                10
-## range  8 - 13 1 - 21 2 - 13 Inf - -Inf Inf - -Inf Inf - -Inf            1 - 21
+## range  (8-13) (1-21) (2-13) (Inf--Inf) (Inf--Inf) (Inf--Inf)            (1-21)
 ## IQR       2.5      4    5.5       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;                 5
 ##           V1    V2    V3    V4         V5         V6             V7
 ## ---     2016  2017  2018  2019       2020       2021 Motor_1_12_mth
@@ -443,7 +443,7 @@ serial_summ = function (data, columns, type) {
 ## mean       2 2.167   1.5     2        NaN        NaN              2
 ## sd         0 1.472 0.707  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;          1.095
 ## median     2     2   1.5     2       &lt;NA&gt;       &lt;NA&gt;              2
-## range  2 - 2 1 - 5 1 - 2 2 - 2 Inf - -Inf Inf - -Inf          1 - 5
+## range  (2-2) (1-5) (1-2) (2-2) (Inf--Inf) (Inf--Inf)          (1-5)
 ## IQR        0  0.75   0.5     0       &lt;NA&gt;       &lt;NA&gt;            0.5
 ##           V1    V2    V3    V4         V5         V6             V7
 ## ---     2016  2017  2018  2019       2020       2021 Motor_2_12_mth
@@ -451,7 +451,7 @@ serial_summ = function (data, columns, type) {
 ## mean       4     4     4     2        NaN        NaN          3.818
 ## sd     1.414 1.265     0  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;          1.168
 ## median     4   4.5     4     2       &lt;NA&gt;       &lt;NA&gt;              4
-## range  3 - 5 2 - 5 4 - 4 2 - 2 Inf - -Inf Inf - -Inf          2 - 5
+## range  (3-5) (2-5) (4-4) (2-2) (Inf--Inf) (Inf--Inf)          (2-5)
 ## IQR        1  1.75     0     0       &lt;NA&gt;       &lt;NA&gt;              2
 ##           V1    V2    V3    V4         V5         V6             V7
 ## ---     2016  2017  2018  2019       2020       2021 Motor_3_12_mth
@@ -459,7 +459,7 @@ serial_summ = function (data, columns, type) {
 ## mean     2.5 1.833   2.5     1        NaN        NaN              2
 ## sd     0.707 1.169 2.121  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;          1.183
 ## median   2.5   1.5   2.5     1       &lt;NA&gt;       &lt;NA&gt;              2
-## range  2 - 3 1 - 4 1 - 4 1 - 1 Inf - -Inf Inf - -Inf          1 - 4
+## range  (2-3) (1-4) (1-4) (1-1) (Inf--Inf) (Inf--Inf)          (1-4)
 ## IQR      0.5     1   1.5     0       &lt;NA&gt;       &lt;NA&gt;            1.5
 ##           V1    V2      V3    V4         V5         V6             V7
 ## ---     2016  2017    2018  2019       2020       2021 Motor_4_12_mth
@@ -467,7 +467,7 @@ serial_summ = function (data, columns, type) {
 ## mean     2.5     2    1.75     2        NaN        NaN          2.045
 ## sd     0.707 0.894   0.354  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;          0.723
 ## median   2.5     2    1.75     2       &lt;NA&gt;       &lt;NA&gt;              2
-## range  2 - 3 1 - 3 1.5 - 2 2 - 2 Inf - -Inf Inf - -Inf          1 - 3
+## range  (2-3) (1-3) (1.5-2) (2-2) (Inf--Inf) (Inf--Inf)          (1-3)
 ## IQR      0.5   1.5    0.25     0       &lt;NA&gt;       &lt;NA&gt;           0.75
 ##           V1    V2    V3    V4         V5         V6             V7
 ## ---     2016  2017  2018  2019       2020       2021 Motor_5_12_mth
@@ -475,7 +475,7 @@ serial_summ = function (data, columns, type) {
 ## mean       2 1.667   2.5     1        NaN        NaN          1.818
 ## sd     1.414 1.033 2.121  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;          1.168
 ## median     2     2   2.5     1       &lt;NA&gt;       &lt;NA&gt;              2
-## range  1 - 3 0 - 3 1 - 4 1 - 1 Inf - -Inf Inf - -Inf          0 - 4
+## range  (1-3) (0-3) (1-4) (1-1) (Inf--Inf) (Inf--Inf)          (0-4)
 ## IQR        1  0.75   1.5     0       &lt;NA&gt;       &lt;NA&gt;            1.5
 ##             V1     V2       V3    V4         V5         V6                 V7
 ## ---       2016   2017     2018  2019       2020       2021 Motor_Total_12_mth
@@ -483,7 +483,7 @@ serial_summ = function (data, columns, type) {
 ## mean        13 11.667    12.25     8        NaN        NaN             11.682
 ## sd       1.414  4.546    3.889  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;              3.717
 ## median      13   10.5    12.25     8       &lt;NA&gt;       &lt;NA&gt;                 11
-## range  12 - 14 7 - 20 9.5 - 15 8 - 8 Inf - -Inf Inf - -Inf             7 - 20
+## range  (12-14) (7-20) (9.5-15) (8-8) (Inf--Inf) (Inf--Inf)             (7-20)
 ## IQR          1   3.25     2.75     0       &lt;NA&gt;       &lt;NA&gt;               4.25</code></pre>
 <pre class="r"><code>vocal = serial_summ(tics_raw, vocal_col, &quot;vocal&quot;)</code></pre>
 <pre><code>##           V1     V2    V3    V4     V5    V6                   V7
@@ -492,7 +492,7 @@ serial_summ = function (data, columns, type) {
 ## mean       7  7.667     7 7.333  7.667   6.5                7.375
 ## sd      &lt;NA&gt;  2.887  &lt;NA&gt; 1.528  3.204 2.121                2.306
 ## median     7      6     7     7    7.5   6.5                    7
-## range  7 - 7 6 - 11 7 - 7 6 - 9 4 - 13 5 - 8               4 - 13
+## range  (7-7) (6-11) (7-7) (6-9) (4-13) (5-8)               (4-13)
 ## IQR        0    2.5     0   1.5   3.25   1.5                 2.25
 ##           V1     V2    V3     V4     V5    V6                   V7
 ## ---     2016   2017  2018   2019   2020  2021 Worse_vocal_tics_Age
@@ -500,7 +500,7 @@ serial_summ = function (data, columns, type) {
 ## mean       8      9     9     10 10.333   6.5                9.312
 ## sd      &lt;NA&gt;      2  &lt;NA&gt;      2  4.967 2.121                3.361
 ## median     8      9     9     10    8.5   6.5                  8.5
-## range  8 - 8 7 - 11 9 - 9 8 - 12 7 - 20 5 - 8               5 - 20
+## range  (8-8) (7-11) (9-9) (8-12) (7-20) (5-8)               (5-20)
 ## IQR        0      2     0      2   3.25   1.5                  2.5
 ##            V1     V2     V3     V4    V5    V6        V7
 ## ---      2016   2017   2018   2019  2020  2021 Vocal_Pre
@@ -508,7 +508,7 @@ serial_summ = function (data, columns, type) {
 ## mean       10     12   11.4  9.333     5     5    10.781
 ## sd      7.071  7.222  4.789  4.041     0  &lt;NA&gt;     5.955
 ## median     10     10     10     10     5     5        10
-## range  5 - 15 5 - 25 5 - 20 5 - 13 5 - 5 5 - 5    5 - 25
+## range  (5-15) (5-25) (5-20) (5-13) (5-5) (5-5)    (5-25)
 ## IQR         5     10   5.75      4     0     0        10
 ##           V1     V2     V3       V4    V5         V6         V7
 ## ---     2016   2017   2018     2019  2020       2021 Vocal_Post
@@ -516,7 +516,7 @@ serial_summ = function (data, columns, type) {
 ## mean       5      7    6.5    5.833     5        NaN        6.5
 ## sd      &lt;NA&gt;  5.583  6.258    3.819     0       &lt;NA&gt;      5.234
 ## median     5      5      5        5     5       &lt;NA&gt;          5
-## range  5 - 5 0 - 15 0 - 15 2.5 - 10 5 - 5 Inf - -Inf     0 - 15
+## range  (5-5) (0-15) (0-15) (2.5-10) (5-5) (Inf--Inf)     (0-15)
 ## IQR        0      5  11.25     3.75     0       &lt;NA&gt;          5
 ##           V1     V2     V3         V4         V5         V6          V7
 ## ---     2016   2017   2018       2019       2020       2021 Vocal_6_mth
@@ -524,7 +524,7 @@ serial_summ = function (data, columns, type) {
 ## mean   3.333    5.4  3.333        NaN        NaN        NaN       4.625
 ## sd     2.887  6.703  5.774       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;       5.795
 ## median     5    2.5      0       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;         2.5
-## range  0 - 5 0 - 15 0 - 10 Inf - -Inf Inf - -Inf Inf - -Inf      0 - 15
+## range  (0-5) (0-15) (0-10) (Inf--Inf) (Inf--Inf) (Inf--Inf)      (0-15)
 ## IQR      2.5  11.75      5       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;        6.25
 ##           V1     V2    V3    V4         V5         V6           V7
 ## ---     2016   2017  2018  2019       2020       2021 Vocal_12_mth
@@ -532,7 +532,7 @@ serial_summ = function (data, columns, type) {
 ## mean     2.5    8.4   2.5     0        NaN        NaN          5.2
 ## sd     3.536  4.775 3.536  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;        4.984
 ## median   2.5      5   2.5     0       &lt;NA&gt;       &lt;NA&gt;            5
-## range  0 - 5 5 - 15 0 - 5 0 - 0 Inf - -Inf Inf - -Inf       0 - 15
+## range  (0-5) (5-15) (0-5) (0-0) (Inf--Inf) (Inf--Inf)       (0-15)
 ## IQR      2.5      7   2.5     0       &lt;NA&gt;       &lt;NA&gt;         3.75</code></pre>
 <pre class="r"><code>misc = serial_summ(tics_raw, misc_col, &quot;misc&quot;)</code></pre>
 <pre><code>##             V1     V2     V3     V4      V5    V6             V7
@@ -541,7 +541,7 @@ serial_summ = function (data, columns, type) {
 ## mean      17.5 16.667 16.429     12      10     0         15.532
 ## sd       9.574 14.606 12.157  8.367       0  &lt;NA&gt;         12.478
 ## median      15     10     10     10      10     0             10
-## range  10 - 30 0 - 50 0 - 40 0 - 20 10 - 10 0 - 0         0 - 50
+## range  (10-30) (0-50) (0-40) (0-20) (10-10) (0-0)         (0-50)
 ## IQR       12.5     20   17.5     10       0     0             15
 ##             V1     V2      V3      V4      V5      V6              V7
 ## ---       2016   2017    2018    2019    2020    2021 YGTSS_Total_Pre
@@ -549,7 +549,7 @@ serial_summ = function (data, columns, type) {
 ## mean     40.25 40.136  37.714  28.167    29.5      13          36.706
 ## sd      14.431 22.497  17.644   9.368   7.724    &lt;NA&gt;          18.681
 ## median      43   40.5    36.5    28.5      28      13              35
-## range  21 - 54 5 - 95 17 - 70 14 - 40 22 - 40 13 - 13          5 - 95
+## range  (21-54) (5-95) (17-70) (14-40) (22-40) (13-13)          (5-95)
 ## IQR      15.75  26.25      27   10.75     7.5       0            23.5
 ##             V1      V2     V3      V4      V5    V6       V7
 ## ---       2016    2017   2018    2019    2020  2021 PUTS_Pre
@@ -557,7 +557,7 @@ serial_summ = function (data, columns, type) {
 ## mean        21  23.227 19.357  22.333      23     2   21.451
 ## sd       3.162   5.614  5.017   8.454   3.464  &lt;NA&gt;    6.224
 ## median    20.5      24   18.5    22.5      24     2       22
-## range  18 - 25 14 - 33 9 - 26 14 - 31 18 - 26 2 - 2   2 - 33
+## range  (18-25) (14-33) (9-26) (14-31) (18-26) (2-2)   (2-33)
 ## IQR          4    8.75   7.25   15.25       2     0      8.5
 ##             V1     V2     V3     V4      V5         V6              V7
 ## ---       2016   2017   2018   2019    2020       2021 Impairment_Post
@@ -565,7 +565,7 @@ serial_summ = function (data, columns, type) {
 ## mean    13.333  8.889  8.846      8      10        NaN           9.146
 ## sd       5.774 13.235 12.609  4.472       0       &lt;NA&gt;          11.286
 ## median      10      0      5     10      10       &lt;NA&gt;              10
-## range  10 - 20 0 - 40 0 - 40 0 - 10 10 - 10 Inf - -Inf          0 - 40
+## range  (10-20) (0-40) (0-40) (0-10) (10-10) (Inf--Inf)          (0-40)
 ## IQR          5     10     10      0       0       &lt;NA&gt;              10
 ##             V1     V2     V3      V4      V5         V6               V7
 ## ---       2016   2017   2018    2019    2020       2021 YGTSS_Total_Post
@@ -573,7 +573,7 @@ serial_summ = function (data, columns, type) {
 ## mean    33.667 27.053     25  23.167   40.75        NaN             27.6
 ## sd       6.506 20.716 18.161   7.026   16.78       &lt;NA&gt;           17.756
 ## median      34     26     21      24    34.5       &lt;NA&gt;               27
-## range  27 - 40 0 - 73 0 - 64 11 - 31 29 - 65 Inf - -Inf           0 - 73
+## range  (27-40) (0-73) (0-64) (11-31) (29-65) (Inf--Inf)           (0-73)
 ## IQR        6.5   30.5     23    6.25   15.75       &lt;NA&gt;               24
 ##             V1      V2     V3      V4      V5         V6        V7
 ## ---       2016    2017   2018    2019    2020       2021 PUTS_Post
@@ -581,7 +581,7 @@ serial_summ = function (data, columns, type) {
 ## mean    25.667  23.158 20.538    22.5   22.25        NaN      22.4
 ## sd       2.517   6.825   5.84   7.503   5.058       &lt;NA&gt;     6.228
 ## median      26      24     21    24.5    21.5       &lt;NA&gt;        23
-## range  23 - 28 10 - 32 9 - 30 11 - 30 18 - 28 Inf - -Inf    9 - 32
+## range  (23-28) (10-32) (9-30) (11-30) (18-28) (Inf--Inf)    (9-32)
 ## IQR        2.5      11      8      10    7.75       &lt;NA&gt;        10
 ##             V1     V2     V3         V4         V5         V6               V7
 ## ---       2016   2017   2018       2019       2020       2021 Impairment_6_mth
@@ -589,7 +589,7 @@ serial_summ = function (data, columns, type) {
 ## mean    13.333  6.538      5        NaN        NaN        NaN            7.368
 ## sd       5.774  9.439   8.66       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;            8.877
 ## median      10      0      0       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;                5
-## range  10 - 20 0 - 30 0 - 15 Inf - -Inf Inf - -Inf Inf - -Inf           0 - 30
+## range  (10-20) (0-30) (0-15) (Inf--Inf) (Inf--Inf) (Inf--Inf)           (0-30)
 ## IQR          5     10    7.5       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;               10
 ##             V1     V2     V3         V4         V5         V6                V7
 ## ---       2016   2017   2018       2019       2020       2021 YGTSS_Total_6_mth
@@ -597,7 +597,7 @@ serial_summ = function (data, columns, type) {
 ## mean        27 20.769 17.667        NaN        NaN        NaN            21.263
 ## sd       5.292 15.525 13.796       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;            13.884
 ## median      25     22     23       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;                23
-## range  23 - 33 1 - 56 2 - 28 Inf - -Inf Inf - -Inf Inf - -Inf            1 - 56
+## range  (23-33) (1-56) (2-28) (Inf--Inf) (Inf--Inf) (Inf--Inf)            (1-56)
 ## IQR          5     19     13       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;              17.5
 ##             V1     V2      V3         V4         V5         V6         V7
 ## ---       2016   2017    2018       2019       2020       2021 PUTS_6_mth
@@ -605,7 +605,7 @@ serial_summ = function (data, columns, type) {
 ## mean    23.667 20.462  20.667        NaN        NaN        NaN         21
 ## sd       4.163  9.198   4.163       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;      7.853
 ## median      25     19      22       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;         22
-## range  19 - 27 0 - 37 16 - 24 Inf - -Inf Inf - -Inf Inf - -Inf     0 - 37
+## range  (19-27) (0-37) (16-24) (Inf--Inf) (Inf--Inf) (Inf--Inf)     (0-37)
 ## IQR          4      7       4       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;          7
 ##             V1     V2      V3    V4         V5         V6                V7
 ## ---       2016   2017    2018  2019       2020       2021 Impairment_12_mth
@@ -613,7 +613,7 @@ serial_summ = function (data, columns, type) {
 ## mean        15     10      10     0        NaN        NaN                10
 ## sd       7.071 11.547       0  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             9.535
 ## median      15     10      10     0       &lt;NA&gt;       &lt;NA&gt;                10
-## range  10 - 20 0 - 30 10 - 10 0 - 0 Inf - -Inf Inf - -Inf            0 - 30
+## range  (10-20) (0-30) (10-10) (0-0) (Inf--Inf) (Inf--Inf)            (0-30)
 ## IQR          5     15       0     0       &lt;NA&gt;       &lt;NA&gt;              12.5
 ##             V1      V2        V3    V4         V5         V6                 V7
 ## ---       2016    2017      2018  2019       2020       2021 YGTSS_Total_12_mth
@@ -621,7 +621,7 @@ serial_summ = function (data, columns, type) {
 ## mean      30.5  28.429     24.75     8        NaN        NaN             26.458
 ## sd      12.021  17.869     0.354  &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;             14.975
 ## median    30.5      22     24.75     8       &lt;NA&gt;       &lt;NA&gt;                 22
-## range  22 - 39 14 - 65 24.5 - 25 8 - 8 Inf - -Inf Inf - -Inf             8 - 65
+## range  (22-39) (14-65) (24.5-25) (8-8) (Inf--Inf) (Inf--Inf)             (8-65)
 ## IQR        8.5      11      0.25     0       &lt;NA&gt;       &lt;NA&gt;               7.75
 ##             V1      V2      V3         V4         V5         V6          V7
 ## ---       2016    2017    2018       2019       2020       2021 PUTS_12_mth
@@ -629,7 +629,7 @@ serial_summ = function (data, columns, type) {
 ## mean      20.5  20.857      19        NaN        NaN        NaN        20.6
 ## sd       2.121   4.413    &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;       3.718
 ## median    20.5      20      19       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;        19.5
-## range  19 - 22 16 - 27 19 - 19 Inf - -Inf Inf - -Inf Inf - -Inf     16 - 27
+## range  (19-22) (16-27) (19-19) (Inf--Inf) (Inf--Inf) (Inf--Inf)     (16-27)
 ## IQR        1.5     6.5       0       &lt;NA&gt;       &lt;NA&gt;       &lt;NA&gt;           3</code></pre>
 <pre class="r"><code>write.csv(motor, &quot;motor.csv&quot;)
 write.csv(vocal, &quot;vocal.csv&quot;)
