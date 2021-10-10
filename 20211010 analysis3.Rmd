@@ -49,6 +49,57 @@ tics_raw$ref_date_sim[1] = 2016 # turning the 9999 into 2016
 ### Function building
 
 ```{r}
+# Function to create descriptive tables
+
+tab_one = function(data, y, x, refNA = NA) {
+  if (!is.na(refNA)) {
+    ind = which(data[,x]!=0)
+  } else {
+    ind = which(!is.na(unlist(data[,x])))
+  }
+  data = data[ind,]
+  tab = table(unlist(data[,x]),
+              unlist(data[,y]))
+  rn = paste(colnames(data)[x],
+              rownames(tab),
+              sep = "_")
+  cn = colnames(tab)
+  
+  tab_new = apply(tab, 2, function (i) {
+    sapply(i, function (j) {
+      paste(j, " (", round(j / sum(i) * 100, digits = 2), "%)", sep = "")
+    })
+  })
+  
+  tab_new = rbind(cn, tab_new)
+  tab_new = cbind(c("Variable", rn), tab_new)
+
+  tot = as.data.frame(table(data[,x]))[,2]
+  tab_new = cbind(tab_new, c("Total", paste(tot, "(", round(tot / sum(tot) * 100, digits = 2), "%)", sep = "")))
+  
+  colnames(tab_new) <- NULL
+  rownames(tab_new) <- NULL
+  
+  return(tab_new)
+}
+```
+
+```{r}
+# Function to produce a series of tables
+
+tab_all = function(data, y, xs, refNA = NA) {
+  tab = tab_one(data = data, y = y, x = xs[1], refNA = refNA)
+  for (i in xs[-1]) {
+    tab2 = tab_one(data = data, y = y, x = i, refNA = refNA)
+    tab = rbind(tab, tab2)
+  }
+  return(tab)
+}
+```
+
+```{r}
+# Function to calculate the distributions of variables
+
 summ_col = function(data, col, colNA = 8888, pre_columns, preNA = 0, by_column) {
   
   # present the findings separately by ___ column
@@ -117,7 +168,7 @@ summ_col = function(data, col, colNA = 8888, pre_columns, preNA = 0, by_column) 
 ```
 
 ```{r}
-### Performing a serial of functions at a time
+### Performing a serial of summarizing functions
 
 serial_summ = function (data, cols, colNA = 8888, pre_columns, preNA = 0, by_column) {
   
@@ -143,3 +194,54 @@ write.csv(motor, "motor2.csv")
 write.csv(vocal, "vocal2.csv")
 write.csv(misc, "misc2.csv")
 ```
+
+```{r}
+# Function to carry out paired t-tests
+
+prepost_t = function(data, pre, preNA = 8888, post, ref_col, refNA = 0) {
+  
+  x = unlist(data[,pre])
+  y = unlist(data[,post])
+  prescore = unlist(data[,pre])
+  postscore = unlist(data[,post])
+  
+  pre_ref = data[,ref_col]
+
+  inds = apply(pre_ref, 2, function(i) {
+    which(i != refNA)
+  })
+
+  indpre = ""
+  if (dim(pre_ref)[2] == 1) {
+    indpre = unlist(inds)
+  } else {
+    for (i in 1:(dim(pre_ref)[2])) {
+      if (i == 1) {
+        indpre = unlist(inds[[1]])
+      } else {
+        indpre = union(unlist(indpre), unlist(inds[[i]]))
+      }
+    }
+  }
+  
+  ind = intersect(which(x < preNA & y < preNA), indpre)
+  
+  t = t.test(prescore[ind], postscore[ind], paired = T)
+  t_out = c(length(ind), t$estimate, t$statistic, t$p.value)
+  names(t_out) = c("n", "MD", "t", "p")
+  return(t_out)
+}
+```
+
+```{r}
+t_motor = prepost_t(data = tics_raw, pre = 51, post = 61, ref_col = 51)
+t_vocal = prepost_t(data = tics_raw, pre = 52, post = 62, ref_col = 52)
+t_impair = prepost_t(data = tics_raw, pre = 53, post = 63, ref_col = c(51,52))
+t_YGTSS = prepost_t(data = tics_raw, pre = 54, post = 64, ref_col = c(51,52))
+t_PUTS = prepost_t(data = tics_raw, pre = 55, post = 65, ref_col = c(51,52))
+```
+
+```{r}
+t_impair
+```
+
