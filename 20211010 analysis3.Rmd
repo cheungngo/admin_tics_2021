@@ -1,0 +1,145 @@
+---
+title: "20211010 analysis 3"
+author: "cheungngo"
+date: "10 October 2021"
+output: html_document
+---
+
+### Data preparation
+
+```{r, message=FALSE, warning=FALSE}
+library(readr)
+tics_raww <- read_csv("~/tics_raww.csv")
+```
+
+```{r}
+# For reference
+
+# names(tics_raww)
+```
+
+```{r}
+### indices of columns (after refering to the above names(tics_raww))
+
+motor_col = c(42:43, 46:51, 56:61, 66:71, 76:81)
+vocal_col = c(44:45, 52, 62, 72, 82)
+misc_col = c(53:55, 63:65, 73:75, 83:85)
+```
+
+```{r}
+### Trimming the unparsable chars
+
+tics_raw = tics_raww
+for (i in 1:length(colnames(tics_raww))) {
+  colnames(tics_raw)[i] = gsub("\n", "", colnames(tics_raww)[i])
+  colnames(tics_raw)[i] = gsub(" ", "_", colnames(tics_raw)[i])
+  colnames(tics_raw)[i] = gsub("[()]", "", colnames(tics_raw)[i])
+}
+```
+
+```{r}
+### Creating the "year" column
+
+tics_raw$ref_date_sim = sapply(tics_raw$Referral_date, function (i) {
+  substr(i, start = 1, stop = 4)
+})
+tics_raw$ref_date_sim[1] = 2016 # turning the 9999 into 2016
+```
+
+### Function building
+
+```{r}
+summ_col = function(data, col, colNA = 8888, pre_columns, preNA = 0, by_column) {
+  
+  # present the findings separately by ___ column
+  by = unique(unlist(data[,by_column]))
+  by_col = unlist(data[,by_column])
+  
+  # the column of data of interest
+  x = unlist(data[,col])
+  
+  # initializing the output
+  output = as.data.frame(matrix(nrow = length(by) + 1, ncol = 6))
+  
+  # generating the index when the input in the reference column is valid
+  # e.g. prescore > 0 for our analysis
+  pre_ref = data[,pre_columns]
+
+  inds = apply(pre_ref, 2, function(i) {
+    which(i != preNA)
+  })
+
+  indpre = ""
+  if (dim(pre_ref)[2] == 1) {
+    indpre = unlist(inds)
+  } else {
+    for (i in 1:(dim(pre_ref)[2])) {
+      if (i == 1) {
+        indpre = unlist(inds[[1]])
+      } else {
+        indpre = union(unlist(indpre), unlist(inds[[i]]))
+      }
+    }
+  }
+  
+  # generating the index by the "by" factor
+  for (y in (1:length(by))) {
+    
+    # indices (of subjects) for each year
+    indby = which(x < colNA & by_col == by[y])
+    ind = intersect(indpre, indby)
+      
+    # output
+    out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
+            median(x[ind]), 
+            paste("(",min(x[ind]), "-", max(x[ind]), ")", sep = ""),
+            IQR(x[ind]))
+    output[y,] = out
+  }
+  
+  # Calculating the total
+  ind = intersect(which(x < colNA), indpre)
+  
+  # output for total
+  out = c(length(ind), round(mean(x[ind]),3), round(sd(x[ind]),3),
+          median(x[ind]), 
+          paste("(",min(x[ind]), "-", max(x[ind]), ")", sep = ""),
+          IQR(x[ind]))
+  output[length(by)+1,] = out
+  
+  output = t(output)
+  title = c(by, colnames(data)[col])
+  output = rbind(title, output)
+  output = as.data.frame(output)
+  rownames(output) = c("---", "n","mean", "sd", "median", "range", "IQR")
+  return(output)
+}
+```
+
+```{r}
+### Performing a serial of functions at a time
+
+serial_summ = function (data, cols, colNA = 8888, pre_columns, preNA = 0, by_column) {
+  
+  tab = summ_col(data = data, col = cols[1], colNA = colNA, pre_columns = pre_columns, preNA = preNA, by_column = by_column)
+  
+  for (x in cols[-1]) {
+    tab2 = summ_col(data = data, col = x, colNA = colNA, pre_columns = pre_columns, preNA = preNA, by_column = by_column)
+    tab = rbind(tab, tab2)
+  }
+  
+  return(as.data.frame(tab))
+}
+```
+
+```{r, warning=FALSE}
+motor = serial_summ(data = tics_raw, cols = motor_col, pre_columns = 51, by_column = 86)
+vocal = serial_summ(data = tics_raw, cols = vocal_col, pre_columns = 52, by_column = 86)
+misc = serial_summ(data = tics_raw, cols = misc_col, pre_columns = c(51,52), by_column = 86)
+```
+
+```{r}
+write.csv(motor, "motor2.csv")
+write.csv(vocal, "vocal2.csv")
+write.csv(misc, "misc2.csv")
+```
